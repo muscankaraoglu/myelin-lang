@@ -1,0 +1,16 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/myelin-diag",
+    "crates/myelin-ast",
+    "crates/myelin-lexer",
+    "crates/myelin-parser",
+    "crates/myelinc",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+authors = ["Myelin Contributors"]
+repository = "https://github.com/myelin-lang/myelin"

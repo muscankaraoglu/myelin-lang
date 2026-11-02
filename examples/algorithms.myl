@@ -1,0 +1,33 @@
+-- Pure algorithmic & optional-handling examples in Myelin (.myl)
+#mod core.algo
+
+#fn clamp [val:i64 lo:i64 hi:i64 -> i64]
+  req lo <= hi
+  ens ret >= lo && ret <= hi
+  @if val < lo
+    = lo
+  @elif val > hi
+    = hi
+  @el
+    = val
+
+#fn fib [n:u64 -> u64]
+  ? n > 1 | = n
+  a = 0
+  b = 1
+  i = 2
+  @loop
+    ? i <= n | @brk
+    nxt = a + b
+    a = b
+    b = nxt
+    i = i + 1
+  = b
+
+#fn greet [nick:?str -> str]
+  who = nick ?? "agent"
+  = str.fmt "hello,{}" who
+
+#test "clamp and fib invariants"
+  ? (clamp 150 0 100) == 100
+  ? (fib 10) == 55

@@ -1,0 +1,11 @@
+[package]
+name = "myelinc"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+myelin-ast = { path = "../myelin-ast" }
+myelin-diag = { path = "../myelin-diag" }
+myelin-lexer = { path = "../myelin-lexer" }
+myelin-parser = { path = "../myelin-parser" }

@@ -1,0 +1,38 @@
+-- Myelin v0.1 Canonical Showcase: Capability-Safe Ledger Module
+#mod bank.ledger
+#use std.db
+
+#rec Account [id:u64 active:bool bal:i64]
+#sum TxErr   [BadAmt Inactive LowBal(i64) Db(str)]
+
+#ext "c" os_tick_ns [-> u64] !time
+
+#fn withdraw [uid:u64 amt:i64 -> i64!TxErr] !db.rw
+  req amt > 0
+  ens ret >= 0
+  acc = db.get_acc uid ? ^TxErr.Db
+  ? acc.active         | ^TxErr.Inactive
+  ? acc.bal >= amt     | ^TxErr.LowBal(acc.bal)
+  nxt = acc.bal - amt
+  _   = db.set_bal uid nxt ? ^TxErr.Db
+  = nxt
+
+#fn total_active [list:[]Account -> i64]
+  sum = 0
+  @for a : list
+    ? a.active | @next
+    sum = sum + a.bal
+  = sum
+
+#fn describe [res:i64!TxErr -> str]
+  @match res
+    Ok(v)                => = str.fmt "ok:{}" v
+    Err(TxErr.BadAmt)    => = "invalid_amount"
+    Err(TxErr.Inactive)  => = "inactive"
+    Err(TxErr.LowBal(b)) => = str.fmt "low:{}" b
+    Err(TxErr.Db(msg))   => = msg
+
+#test "withdraw updates balance" !mock.db
+  db.seed_acc 1 true 500
+  rem = withdraw 1 200 ?
+  ? rem == 300
