@@ -1,0 +1,14 @@
+{
+  "name": "myelin-wiki",
+  "version": "0.1.0",
+  "description": "Official Documentation and Wiki for Myelin Programming Language",
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4"
+  }
+}

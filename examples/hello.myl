@@ -1,0 +1,4 @@
+#mod main
+
+#fn main [] !io
+  io.println "hello, world! - from myelin"

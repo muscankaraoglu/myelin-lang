@@ -1,0 +1,13 @@
+#mod main
+
+#fn handle_request [path:str -> str]
+  @if path == "/"
+    = "Welcome to Myelin Web API! Server running with 0 external dependencies."
+  @elif path == "/status"
+    = "{\"status\":\"healthy\",\"engine\":\"myelinc-v0.1.0\",\"runtime\":\"driverless\"}"
+  @el
+    = str.fmt "404 Not Found: Path '{}' is not registered" path
+
+#fn main [] !net !io
+  io.println "Starting Myelin HTTP Server on port 8080..."
+  _ = http.serve 8080 "handle_request"

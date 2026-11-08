@@ -1,0 +1,21 @@
+#mod main
+
+#fn main [] !db !io
+  io.println "Initializing Myelin Embedded Storage Engine..."
+
+  _ = db.set "user:1:name" "Can"
+  _ = db.set "user:1:role" "Creator & Architect"
+  _ = db.set "user:1:balance" "50000"
+
+  _ = db.set "user:2:name" "MyelinAgent"
+  _ = db.set "user:2:role" "Autonomous AI Runtime"
+
+  name = db.get "user:1:name"
+  role = db.get "user:1:role"
+  bal  = db.get "user:1:balance"
+
+  report = str.fmt "DB Query -> Name: {} | Role: {} | Balance: ${}" name role bal
+  io.println report
+
+  exists = db.has "user:1:name"
+  io.println "Key 'user:1:name' exists in DB:" exists

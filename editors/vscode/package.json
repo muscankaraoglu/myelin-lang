@@ -1,0 +1,51 @@
+{
+  "name": "myelin-lang",
+  "displayName": "Myelin Language Support",
+  "description": "Rich language support and review highlighting for Myelin (.myl) — the token-minimal systems programming language.",
+  "version": "0.1.0",
+  "publisher": "myelin-lang",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Snippets"
+  ],
+  "keywords": [
+    "myelin",
+    "myl",
+    "ssa",
+    "capabilities",
+    "systems"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "myelin",
+        "aliases": [
+          "Myelin",
+          "myelin"
+        ],
+        "extensions": [
+          ".myl"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "myelin",
+        "scopeName": "source.myelin",
+        "path": "./syntaxes/myelin.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "myelin",
+        "path": "./snippets/myelin.json"
+      }
+    ]
+  }
+}

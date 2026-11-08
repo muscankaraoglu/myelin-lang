@@ -1,0 +1,57 @@
+{
+  "Function Declaration": {
+    "prefix": "fn",
+    "body": [
+      "#fn ${1:name} [${2:args}] ${3:!io}",
+      "  ${0:= 0}"
+    ],
+    "description": "Declare a top-level Myelin function"
+  },
+  "Record Declaration": {
+    "prefix": "rec",
+    "body": [
+      "#rec ${1:Name} [${2:field1}:${3:u64} ${4:field2}:${5:str}]"
+    ],
+    "description": "Declare a Myelin struct record"
+  },
+  "Sum Type Declaration": {
+    "prefix": "sum",
+    "body": [
+      "#sum ${1:Name} [${2:VariantA} ${3:VariantB}(${4:i64})]"
+    ],
+    "description": "Declare a Myelin tagged union sum type"
+  },
+  "Contract Pre/Post": {
+    "prefix": "contract",
+    "body": [
+      "req ${1:amt > 0}",
+      "ens ${2:ret >= 0}"
+    ],
+    "description": "Insert precondition and postcondition contracts"
+  },
+  "Guard with Error": {
+    "prefix": "guard",
+    "body": [
+      "? ${1:condition} | ^${2:ErrVariant}"
+    ],
+    "description": "Guard condition with early error return"
+  },
+  "Pattern Match": {
+    "prefix": "match",
+    "body": [
+      "@match ${1:expr}",
+      "  ${2:Ok(v)}  => = ${3:v}",
+      "  ${4:Err(e)} => ^ ${5:e}"
+    ],
+    "description": "Pattern match block"
+  },
+  "Unit Test": {
+    "prefix": "test",
+    "body": [
+      "#test ${1:test_name}",
+      "  res = ${2:call}",
+      "  ? ${3:res == expected}"
+    ],
+    "description": "Declare an embedded Myelin unit test"
+  }
+}

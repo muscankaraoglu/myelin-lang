@@ -1,0 +1,16 @@
+#mod main
+
+#fn main [] !io
+  toplam = 0
+  sayac = 1
+
+  @loop
+    ? sayac <= 10 | @brk
+    toplam = toplam + sayac
+
+    @if sayac == 5
+      io.println "-> Tam ortadayiz: sayac = 5"
+
+    sayac = sayac + 1
+
+  io.println "1'den 10'a kadar sayilarin toplami =" toplam
