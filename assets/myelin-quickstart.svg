@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 640" width="100%" height="100%">
+  <defs>
+    <!-- Claude Code TUI Palette -->
+    <linearGradient id="tuiBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#191716" />
+      <stop offset="100%" stop-color="#121110" />
+    </linearGradient>
+    <filter id="cardShadow" x="-2%" y="-2%" width="104%" height="106%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000000" flood-opacity="0.75" />
+    </filter>
+
+    <!-- Clip Paths for Typewriter & Streaming Text Effects -->
+    <!-- 1. User typing clip: width expands from 0 to 240px -->
+    <clipPath id="userTypeClip">
+      <rect x="42" y="10" width="0" height="30">
+        <animate attributeName="width" values="0; 0; 240; 240; 0" keyTimes="0; 0.04; 0.22; 0.94; 1" dur="11s" repeatCount="indefinite" />
+      </rect>
+    </clipPath>
+
+    <!-- 2. Streaming Line 1: #mod main -->
+    <clipPath id="streamLine1">
+      <rect x="0" y="-18" width="0" height="26">
+        <animate attributeName="width" values="0; 0; 160; 160; 0" keyTimes="0; 0.30; 0.36; 0.94; 1" dur="11s" repeatCount="indefinite" />
+      </rect>
+    </clipPath>
+
+    <!-- 3. Streaming Line 2: #fn main [] !io -->
+    <clipPath id="streamLine2">
+      <rect x="0" y="10" width="0" height="26">
+        <animate attributeName="width" values="0; 0; 220; 220; 0" keyTimes="0; 0.37; 0.45; 0.94; 1" dur="11s" repeatCount="indefinite" />
+      </rect>
+    </clipPath>
+
+    <!-- 4. Streaming Line 3: io.println "Hello, World! - from Myelin" -->
+    <clipPath id="streamLine3">
+      <rect x="0" y="38" width="0" height="26">
+        <animate attributeName="width" values="0; 0; 450; 450; 0" keyTimes="0; 0.46; 0.58; 0.94; 1" dur="11s" repeatCount="indefinite" />
+      </rect>
+    </clipPath>
+  </defs>
+
+  <style>
+    .tui-font { font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, Menlo, monospace; }
+  </style>
+
+  <!-- 1. Window Frame -->
+  <rect x="20" y="20" width="860" height="600" rx="12" fill="url(#tuiBg)" stroke="#2e2b28" stroke-width="1.2" filter="url(#cardShadow)" />
+
+  <!-- 2. Terminal Title Bar -->
+  <path d="M 20 32 Q 20 20 32 20 L 868 20 Q 880 20 880 32 L 880 62 L 20 62 Z" fill="#24211e" />
+  <circle cx="48" cy="41" r="5.5" fill="#eb5757" />
+  <circle cx="66" cy="41" r="5.5" fill="#f2c94c" />
+  <circle cx="84" cy="41" r="5.5" fill="#27ae60" />
+  <text x="450" y="46" fill="#8f8576" class="tui-font" font-size="12" font-weight="600" text-anchor="middle">
+    claude — ~/myelin-project (claude-code)
+  </text>
+  <line x1="20" y1="62" x2="880" y2="62" stroke="#2e2b28" stroke-width="1" />
+
+  <!-- ================= ANIMATED CLAUDE CODE CLI RUNTIME ================= -->
+
+  <!-- STEP 1: PROMPT INPUT BOX (User Types with Moving Cursor) -->
+  <g transform="translate(50, 85)">
+    <!-- Box border -->
+    <rect x="0" y="0" width="800" height="48" rx="8" fill="#1e1c1a" stroke="#d97757" stroke-width="1.4" />
+    <!-- Prompt character > -->
+    <text x="18" y="30" fill="#d97757" class="tui-font" font-size="16" font-weight="700">&gt;</text>
+    
+    <!-- User Input with Typewriter Clip -->
+    <g clip-path="url(#userTypeClip)">
+      <text x="42" y="30" fill="#f5ede3" class="tui-font" font-size="14.5" font-weight="500">/myelin write hello world</text>
+    </g>
+
+    <!-- Cursor that moves as typing happens (42px -> 280px) and blinks -->
+    <rect y="16" width="9" height="18" fill="#d97757">
+      <animate attributeName="x" values="42; 42; 280; 280; 42" keyTimes="0; 0.04; 0.22; 0.94; 1" dur="11s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="1; 0; 1; 0; 1; 0; 1" dur="0.8s" repeatCount="indefinite" />
+    </rect>
+  </g>
+
+  <!-- STEP 2: CLAUDE CODE STATUS & THINKING (With Centered * Asterisk) -->
+  <g transform="translate(50, 155)">
+    <animate attributeName="opacity" values="0; 0; 1; 1; 0" keyTimes="0; 0.22; 0.26; 0.95; 1" dur="11s" repeatCount="indefinite" />
+    
+    <!-- Centered * Asterisk Symbol in Badge -->
+    <circle cx="10" cy="9" r="10" fill="#30231d" />
+    <text x="10" y="10" fill="#d97757" class="tui-font" font-size="17" font-weight="900" text-anchor="middle" dominant-baseline="central">*</text>
+
+    <!-- Badge Text -->
+    <text x="28" y="14" fill="#d97757" class="tui-font" font-size="13" font-weight="700">Claude Code</text>
+    <rect x="132" y="0" width="90" height="18" rx="4" fill="#30231d" />
+    <text x="177" y="13" fill="#d97757" class="tui-font" font-size="10.5" font-weight="600" text-anchor="middle">Opus 4.8</text>
+    <text x="234" y="14" fill="#7d7467" class="tui-font" font-size="12">• Streaming response (via SKILL.md)</text>
+  </g>
+
+  <!-- STEP 3: CLAUDE FILE ACTION: STREAMING HELLO.MYL -->
+  <g transform="translate(50, 190)">
+    <!-- Container Appears -->
+    <animate attributeName="opacity" values="0; 0; 1; 1; 0" keyTimes="0; 0.26; 0.30; 0.95; 1" dur="11s" repeatCount="indefinite" />
+    
+    <!-- Outer File Diff Container -->
+    <rect x="0" y="0" width="800" height="152" rx="8" fill="#141312" stroke="#332f2b" stroke-width="1.2" />
+    
+    <!-- File Header bar -->
+    <path d="M 0 8 Q 0 0 8 0 L 792 0 Q 800 0 800 8 L 800 32 L 0 32 Z" fill="#1d1b19" />
+    <text x="16" y="21" fill="#c4baa7" class="tui-font" font-size="12" font-weight="600">Created hello.myl (+3 lines)</text>
+    <rect x="676" y="7" width="112" height="18" rx="4" fill="#2d1c16" stroke="#d97757" stroke-width="0.8" />
+    <text x="732" y="20" fill="#d97757" class="tui-font" font-size="10" font-weight="700" text-anchor="middle">TOKEN EFFICIENT</text>
+
+    <!-- STREAMING CODE BODY -->
+    <g transform="translate(24, 62)" class="tui-font" font-size="13.5">
+      <!-- Line 1: #mod main (Streams at 30%) -->
+      <g clip-path="url(#streamLine1)">
+        <text y="0">
+          <tspan fill="#d97757" font-weight="700">#mod</tspan> <tspan fill="#f5ede3">main</tspan>
+        </text>
+      </g>
+
+      <!-- Line 2: #fn main [] !io (Streams at 37%) -->
+      <g clip-path="url(#streamLine2)">
+        <text y="28">
+          <tspan fill="#d97757" font-weight="700">#fn</tspan> <tspan fill="#caa8f5">main</tspan> <tspan fill="#6ab0f8">[]</tspan> <tspan fill="#f2a348" font-weight="700">!io</tspan>
+        </text>
+      </g>
+
+      <!-- Line 3: io.println "Hello, World! - from Myelin" (Streams at 46%) -->
+      <g clip-path="url(#streamLine3)">
+        <text y="56">
+          <tspan fill="#7d7467">  </tspan><tspan fill="#7ee787">io</tspan><tspan fill="#c9d1d9">.</tspan><tspan fill="#caa8f5">println</tspan> <tspan fill="#99d6fc">"Hello, World! - from Myelin"</tspan>
+        </text>
+      </g>
+    </g>
+  </g>
+
+  <!-- STEP 4: CLAUDE TOOL EXECUTION COMMAND (Appears at 60%) -->
+  <g transform="translate(50, 360)">
+    <animate attributeName="opacity" values="0; 0; 1; 1; 0" keyTimes="0; 0.58; 0.63; 0.95; 1" dur="11s" repeatCount="indefinite" />
+    
+    <rect x="0" y="0" width="800" height="42" rx="6" fill="#1b1a18" stroke="#3b3631" stroke-width="1.2" />
+    <rect x="0" y="0" width="112" height="42" rx="6" fill="#2a2622" />
+    <text x="16" y="26" fill="#a89f91" class="tui-font" font-size="11" font-weight="700">BASH TOOL</text>
+    <text x="130" y="26" class="tui-font" font-size="13.5">
+      <tspan fill="#58c442" font-weight="bold">$</tspan> <tspan fill="#6ab0f8">myelinc</tspan> <tspan fill="#f5ede3">run</tspan> <tspan fill="#99d6fc">hello.myl</tspan>
+    </text>
+  </g>
+
+  <!-- STEP 5: BARE-METAL OUTPUT CARD (Appears at 72%) -->
+  <g transform="translate(50, 420)">
+    <animate attributeName="opacity" values="0; 0; 1; 1; 0" keyTimes="0; 0.70; 0.75; 0.95; 1" dur="11s" repeatCount="indefinite" />
+    
+    <!-- Output container -->
+    <rect x="0" y="0" width="800" height="135" rx="8" fill="#0d0c0b" stroke="#2b2825" stroke-width="1.2" />
+    
+    <!-- Top subhead -->
+    <circle cx="20" cy="20" r="4" fill="#58c442" />
+    <text x="34" y="24" fill="#7d7467" class="tui-font" font-size="11" font-weight="600">STDOUT • BARE-METAL REGISTER VM</text>
+    <line x1="0" y1="36" x2="800" y2="36" stroke="#1d1b19" stroke-width="1" />
+
+    <!-- Actual Program Output -->
+    <text x="24" y="70" fill="#58c442" class="tui-font" font-size="15.5" font-weight="700">Hello, World! - from Myelin</text>
+    <text x="24" y="94" fill="#8f8576" class="tui-font" font-size="12">-- finished in 143 µs (Zero GC • Zero Ambient Authority)</text>
+    
+    <!-- Verified Badge -->
+    <rect x="24" y="106" width="186" height="18" rx="4" fill="#19281a" stroke="#256e30" stroke-width="0.8" />
+    <text x="117" y="119" fill="#4ade80" class="tui-font" font-size="10.5" font-weight="600" text-anchor="middle">✔ CAPABILITY VERIFIED: !io</text>
+  </g>
+
+  <!-- BOTTOM STATUS BAR (Claude Code style) -->
+  <g transform="translate(50, 580)">
+    <text x="0" y="10" fill="#665f54" class="tui-font" font-size="11">
+      esc to cancel • tab to complete • /help for commands • myelin v0.1.0
+    </text>
+  </g>
+</svg>
