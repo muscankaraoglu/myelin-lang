@@ -37,16 +37,17 @@ Bu ikili dosyayı sisteminizin `$PATH` ortam değişkeninde yer alan herhangi bi
 `myelinc`, hem geliştiriciler hem de otonom yapay zeka ajanları için optimize edilmiş komutlar sunar:
 
 ```bash
-myelinc <KOMUT> <dosya.myl> [--llm]
+myelinc <KOMUT> <dosya.myl> [--llm] [argümanlar...]
 ```
 
 | Komut | Açıklama |
 | :--- | :--- |
-| `myelinc run <dosya.myl>` | Myelin kaynak dosyasını yerleşik çalışma zamanı motoru ile anında çalıştırır. |
+| `myelinc run <dosya.myl> [arg...]` | Myelin kaynak dosyasını yerleşik çalışma motoru ile anında çalıştırır; ek argümanları `cli.args` modülüne aktarır. |
 | `myelinc check <dosya.myl>` | Kodu çalıştırmadan sözcük (lexing), sözdizimi (parsing) ve anlamsal doğrulamadan geçirir. |
+| `myelinc audit <dosya.myl>` | Yetenek güvenliğini ve sözleşmeleri denetleyip kriptografik SHA-256 İnsan Güven Manifestosu üretir. |
 | `myelinc parse <dosya.myl>` | Kaynak kodun Soyut Sözdizim Ağacını (AST) ekrana yazdırır. |
 | `myelinc lex <dosya.myl>` | Kaynak koddaki token akışını satır ve sütun bilgileriyle listeler. |
-| `--llm` bayrağı | Tüm hata ve uyarıları LLM'lerin doğrudan düzeltebileceği tek satırlık formata dönüştürür. |
+| `--llm` bayrağı | Tüm hata ve denetim kararlarını LLM'lerin doğrudan işleyebileceği tek satırlık formata dönüştürür. |
 
 ---
 

@@ -37,16 +37,17 @@ You can move `myelinc` to any directory in your system `$PATH` (e.g. `C:\Windows
 `myelinc` provides commands tailored for both human developers and autonomous AI agents:
 
 ```bash
-myelinc <COMMAND> <file.myl> [--llm]
+myelinc <COMMAND> <file.myl> [--llm] [args...]
 ```
 
 | Command | Description |
 | :--- | :--- |
-| `myelinc run <file.myl>` | Executes the Myelin source file using the built-in driverless runtime. |
+| `myelinc run <file.myl> [args...]` | Executes the Myelin source file using the built-in driverless runtime, forwarding trailing arguments to `cli.args`. |
 | `myelinc check <file.myl>` | Runs the lexer, parser, and semantic verifier without executing. |
+| `myelinc audit <file.myl>` | Verifies capability safety, contracts, and emits a cryptographic SHA-256 Human Trust Manifest. |
 | `myelinc parse <file.myl>` | Prints the Abstract Syntax Tree (AST) representation. |
 | `myelinc lex <file.myl>` | Prints the raw token stream with line & column spans. |
-| `--llm` flag | Formats all diagnostics into single-line machine repair hints. |
+| `--llm` flag | Formats all diagnostics and audit verdicts into single-line machine repair hints. |
 
 ---
 

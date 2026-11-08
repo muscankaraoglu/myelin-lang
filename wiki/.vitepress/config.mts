@@ -15,6 +15,7 @@ const myelinLanguage = {
     { name: 'string.quoted.double.myelin', match: '"([^"\\\\]|\\\\.)*"' },
     { name: 'constant.numeric.myelin', match: '\\b\\d+(\\.\\d+)?\\b' },
     { name: 'storage.type.myelin', match: '\\b(i8|i16|i32|i64|u8|u16|u32|u64|usz|f32|f64|bool|str|bytes)\\b' },
+    { name: 'support.function.builtin.myelin', match: '\\b(io\\.println|str\\.fmt|db\\.(set|get|has)|http\\.serve|term\\.(green|red|cyan|bold|yellow|blue|magenta|gray|dim|reset)|cli\\.(args|count|arg_count|flag_bool|has_flag|flag_str|flag_int))\\b' },
     { name: 'keyword.operator.myelin', match: '(\\?|\\^|=|==|!=|<=|>=|<|>|\\+|\\-|\\*|\\/|%|\\|)' },
   ],
 };
@@ -62,7 +63,7 @@ export default defineConfig({
           {
             text: '⚡ Runtime & Built-ins',
             items: [
-              { text: 'Standard Modules (io, str, db, http)', link: '/guide/builtin-modules' },
+              { text: 'Standard Modules (io, str, db, http, term, cli)', link: '/guide/builtin-modules' },
             ],
           },
           {
@@ -121,7 +122,7 @@ export default defineConfig({
           {
             text: '⚡ Çalışma Zamanı ve Dahili Modüller',
             items: [
-              { text: 'Standart Modüller (io, str, db, http)', link: '/tr/guide/yerlesik-moduller' },
+              { text: 'Standart Modüller (io, str, db, http, term, cli)', link: '/tr/guide/yerlesik-moduller' },
             ],
           },
           {

@@ -26,12 +26,15 @@ Capabilities are declared at the end of a function signature using `!` followed 
 
 | Capability | Scope | Allowed Operations |
 | :--- | :--- | :--- |
-| `!io` | Standard Console I/O | `io.println`, printing debugging output |
-| `!net` | Network Operations | TCP, UDP, HTTP client/server (`http.serve`) |
-| `!db` | Persistent Storage | Read/write access to embedded database (`db.set`, `db.get`) |
-| `!fs` | File System | File reading and writing |
-| `!clock` | System Clock | Reading wall-clock time and timers |
-| `!unsafe.mem` | Raw Pointer Memory | Direct pointer dereferencing and C FFI calls |
+| `!io` | Standard Console I/O | `io.println`, debugging and log printing |
+| `!net` | Network Operations | TCP, UDP, bare-metal HTTP client/server (`http.serve`) |
+| `!db` | Persistent Storage | Read/write access to embedded database (`db.set`, `db.get`, `db.has`) |
+| `!term` | Terminal Emulation | ANSI styling and terminal formatting (`term.green`, `term.bold`, etc.) |
+| `!cli` | Command-Line Environment | Reading flags and positional parameters (`cli.args`, `cli.flag_bool`, etc.) |
+| `!fs` | File System | Direct file system reading and writing |
+| `!time` / `!clock` | System Clock | Reading wall-clock time and system timers |
+| `!unsafe.mem` | Raw Pointer Memory | Direct pointer dereferences, raw buffer mutations |
+| `!unsafe.ffi` | Foreign Function ABI | Dynamic calls into foreign C/Rust ABI bindings (`#ext`) |
 
 ---
 
@@ -55,25 +58,75 @@ If contracts are violated at runtime, an assertion failure is triggered with sou
 
 ## Trust & Capability Audit (`myelinc audit`)
 
-When AI agents generate thousands of lines of software, human engineers do not need to read every single line of code. Instead, they run:
+When AI agents generate thousands of lines of software, human engineers do not need to read every single line of code. Instead, they run the cryptographic audit engine:
 
 ```bash
-myelinc audit src/
+myelinc audit examples/cli_tool.myl
 ```
 
-This outputs a cryptographic **Trust Manifest**:
+This outputs a cryptographic **Human Trust Manifest** verified against NIST FIPS 180-4 SHA-256:
 
 ```text
-=== MYELIN TRUST & CAPABILITY MANIFEST ===
-Module: finance.settlement
-Capabilities Claimed:
-  - !db.rw       (Database Read/Write)
-  - !net.https   (Outbound TLS Only)
+================================================================================
+                    MYELIN TRUST & CAPABILITY MANIFEST                          
+================================================================================
+Module:        main
+Source:        examples/cli_tool.myl
+SHA256:        f2a2fc46a7d5fe62f4640a2b2efa3092733f80d1603105858919bab447d23632
+Safety Status: VERIFIED (Mathematically sound, zero ambient authority)
 
-Contracts Verified:
-  - 12 functions with strict 'req' & 'ens' proofs
-  - Zero unsafe memory operations (!unsafe.mem is absent)
-  - Zero ambient file access (!fs is absent)
+-- CAPABILITY & AUTHORITY AUDIT ------------------------------------------------
+* Function '#fn main':
+    Declared:  !io !cli !term
+    Used:      !io
+    Calls:     cli.flag_bool, cli.flag_int, cli.flag_str, io.println, str.fmt, term.bold, term.cyan, term.green, term.red, term.yellow
+    Verdict:   [SAFE] Authorized by capability declaration
 
-Security Rating: HIGH TRUST (Verified pure computational pipeline)
+-- UNTRUSTED OPERATIONS & FOREIGN INTEROP --------------------------------------
+  None (Fully sandboxed memory & execution, zero raw pointer dereferences)
+
+-- FORMAL VERIFICATION & CONTRACTS ---------------------------------------------
+Pre-conditions  (req): 0 verified
+Post-conditions (ens): 0 verified
+Flat Guards     (?):   0 runtime assertions & bounds checks
+
+-- EXTRACTED MODULE DECLARATIONS -----------------------------------------------
+Records (#rec): 0
+Functions (#fn): 1
+  - #fn main [] !io !cli !term
+Tests (#test): 0
+================================================================================
+  TRUST VERDICT: 0 VIOLATIONS | ZERO AMBIENT AUTHORITY VERIFIED
+================================================================================
 ```
+
+### Detecting Capability Violations
+
+If an AI agent produces code that attempts to access system resources without declaring the proper capability, `myelinc audit` immediately flags the unauthorized access and rejects the artifact:
+
+```text
+-- CAPABILITY & AUTHORITY AUDIT ------------------------------------------------
+* Function '#fn leak':
+    Declared:  [] (Pure)
+    Used:      !db
+    Calls:     db.set
+    Verdict:   [VIOLATION: Capability '!db' used in function 'leak' but not declared!]
+...
+================================================================================
+  TRUST VERDICT: REJECTED — CAPABILITY LEAK DETECTED
+================================================================================
+```
+
+### Autonomous Audit in CI/CD (`--llm`)
+
+For continuous integration and autonomous agents, `myelinc audit` outputs a single-line summary when `--llm` is passed:
+
+```bash
+myelinc audit src/module.myl --llm
+```
+
+Output:
+```text
+OK AUDIT main | sha256=ce950f81299d59e9d3d061e1df75661c0256d8553fecf62aff244187b16a1d9f | recs=0 sums=0 fns=2 tests=0 exts=0 | contracts=req:0,ens:0,guards:0 | violations=0 | status=VERIFIED
+```
+If a violation occurs, `status=REJECTED` and `violations=1` are reported with exit code 1, immediately halting untrusted deployment pipelines.

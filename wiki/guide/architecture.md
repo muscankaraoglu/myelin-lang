@@ -23,7 +23,7 @@ flowchart TD
 | **`myelin-ast`** | `crates/myelin-ast` | Typed Abstract Syntax Tree definitions for modules, items, records, sums, functions, contracts, statements, and Pratt expressions. |
 | **`myelin-lexer`** | `crates/myelin-lexer` | Single-pass zero-copy scanner that validates 2-space indentation, rejects tabs (`E001`), and emits synthetic `INDENT`/`DEDENT` tokens. |
 | **`myelin-parser`** | `crates/myelin-parser` | Deterministic recursive-descent LL(1) parser for top-level `#` items paired with a Pratt parser for binary and unary expressions. |
-| **`myelinc`** | `crates/myelinc` | Unified command-line interface (`run`, `check`, `parse`, `lex`), diagnostic reporting, and driverless execution runtime (I/O, Key-Value DB, Native HTTP). |
+| **`myelinc`** | `crates/myelinc` | Unified command-line interface (`run`, `check`, `audit`, `parse`, `lex`), cryptographic SHA-256 trust manifest engine (`audit.rs`), diagnostic reporting, and driverless execution runtime (I/O, Key-Value DB, Native HTTP, ANSI Terminal, CLI Flags). |
 
 ---
 
@@ -33,8 +33,9 @@ Adding a new built-in feature or module is straightforward:
 
 1. **AST / Grammar Update:** If new syntax is needed, update `myelin-ast` and `myelin-parser`.
 2. **Lexer Verification:** Ensure tokenization maintains 2-space indentation invariants in `myelin-lexer`.
-3. **Runtime Builtins:** To add a new standard library function (e.g. `crypto.sha256` or `fs.read_file`), implement the capability check and evaluation handler in `crates/myelinc/src/main.rs`.
-4. **LLM Skill Update:** Keep `SKILL.md` aligned with any new standard module syntax.
+3. **Runtime Builtins:** To add a new standard library function (e.g. `term.green` or `cli.args`), implement the capability check and evaluation handler in `crates/myelinc/src/main.rs`.
+4. **Audit Engine:** Ensure the capability collector in `crates/myelinc/src/audit.rs` tracks new builtin symbols and maps them to the appropriate capability requirement.
+5. **LLM Skill Update:** Keep `SKILL.md` aligned with any new standard module syntax.
 
 ---
 
@@ -45,6 +46,9 @@ Adding a new built-in feature or module is straightforward:
 - [x] Design-by-Contract (`req` / `ens`) and Capability Safety (`!`)
 - [x] Embedded Key-Value Storage (`db.set`, `db.get`, `db.has`)
 - [x] Native Multi-threaded HTTP Server (`http.serve`)
+- [x] Terminal Color & Styling Engine (`term.*`)
+- [x] Command-Line Argument & Flag Parser (`cli.*`)
+- [x] Cryptographic Human Trust Manifest & Capability Verifier (`myelinc audit`)
 - [ ] 64-bit Register VM Bytecode Generator
 - [ ] Perceus Compile-Time Reference Counting & Reuse Analysis
 - [ ] Cranelift / LLVM Bare-Metal JIT & WASM Compilation Backend
