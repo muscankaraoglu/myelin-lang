@@ -1,6 +1,6 @@
 # Myelin (`.myl`)
 
-[Türkçe Dokümantasyon (README.tr.md)](./README.tr.md) | [LLM Authoring Skill (SKILL.md)](./SKILL.md) | [Language Spec (docs/SPEC.md)](./docs/SPEC.md) | [Compiler Architecture (docs/ARCHITECTURE.md)](./docs/ARCHITECTURE.md)
+[Documentation Wiki (wiki/)](./wiki/README.md) | [Türkçe Dokümantasyon (README.tr.md)](./README.tr.md) | [LLM Authoring Skill (SKILL.md)](./SKILL.md) | [Language Spec (docs/SPEC.md)](./docs/SPEC.md) | [Compiler Architecture (docs/ARCHITECTURE.md)](./docs/ARCHITECTURE.md)
 
 **Myelin** is a capability-safe, flat-SSA, zero-GC systems programming language designed from first principles **to be written by Large Language Models, executed at bare-metal speed by machines, and audited by humans without reading a single line of code.**
 

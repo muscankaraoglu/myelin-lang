@@ -1,6 +1,6 @@
 # Myelin (`.myl`) — Türkçe Kılavuz
 
-[English README](./README.md) | [LLM Yetenek Belgesi (SKILL.md)](./SKILL.md) | [Dil Spesifikasyonu (docs/SPEC.md)](./docs/SPEC.md) | [Derleyici Mimarisi (docs/ARCHITECTURE.md)](./docs/ARCHITECTURE.md)
+[Dokümantasyon & Wiki (wiki/)](./wiki/README.md) | [English README](./README.md) | [LLM Yetenek Belgesi (SKILL.md)](./SKILL.md) | [Dil Spesifikasyonu (docs/SPEC.md)](./docs/SPEC.md) | [Derleyici Mimarisi (docs/ARCHITECTURE.md)](./docs/ARCHITECTURE.md)
 
 **Myelin**, insanların okuması için değil; **Büyük Dil Modellerinin (LLM) minimum token ve sıfır hatayla yazması, makinelerin C/Rust hızında çalıştırması ve insanların tek satır kod okumadan derleyici kanıtlarıyla güvenmesi** için sıfırdan tasarlanmış yetki-güvenlikli (capability-safe), sıfır-GC bir sistem programlama dilidir.
 
