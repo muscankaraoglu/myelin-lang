@@ -9,13 +9,68 @@ const myelinLanguage = {
     { name: 'comment.line.double-dash.myelin', match: '--.*$' },
     { name: 'keyword.control.directive.myelin', match: '^#(mod|use|rec|sum|ext|fn|test)\\b' },
     { name: 'keyword.control.flow.myelin', match: '@(if|elif|el|for|loop|match|next|brk)\\b' },
-    { name: 'keyword.control.contract.myelin', match: '\\b(req|ens)\\b' },
-    { name: 'entity.name.tag.capability.myelin', match: '![a-zA-Z0-9_.]+' },
+    { name: 'keyword.control.contract.myelin', match: '\\b(req|ens|ret)\\b' },
+    { name: 'invalid.illegal.unsafe.myelin', match: '(?<=[\\s\\]])!unsafe(?:\\.[a-zA-Z0-9_]+)?\\b' },
+    { name: 'keyword.control.capability.security.myelin entity.name.tag.capability.security.myelin', match: '(?<=[\\s\\]])!(?:net|db|fs|proc|env|cloud)(?:\\.[a-zA-Z0-9_]+)?\\b' },
+    { name: 'entity.name.tag.capability.cli.myelin entity.name.tag.capability.myelin', match: '(?<=[\\s\\]])!(?:term|cli)(?:\\.[a-zA-Z0-9_]+)?\\b' },
+    { name: 'entity.name.tag.capability.host.myelin entity.name.tag.capability.myelin', match: '(?<=[\\s\\]])!(?:io|time|rand|hw)(?:\\.[a-zA-Z0-9_]+)?\\b' },
+    { name: 'entity.name.tag.capability.ai.myelin entity.name.tag.capability.myelin', match: '(?<=[\\s\\]])!(?:ai)(?:\\.[a-zA-Z0-9_]+)?\\b' },
+    { name: 'entity.name.tag.capability.gui.myelin entity.name.tag.capability.myelin', match: '(?<=[\\s\\]])!(?:gui|mobile)(?:\\.[a-zA-Z0-9_]+)?\\b' },
+    { name: 'entity.name.tag.capability.general.myelin entity.name.tag.capability.myelin', match: '(?<=[\\s\\]])![a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z0-9_]+)?\\b' },
     { name: 'constant.language.boolean.myelin', match: '\\b(true|false|none)\\b' },
     { name: 'string.quoted.double.myelin', match: '"([^"\\\\]|\\\\.)*"' },
     { name: 'constant.numeric.myelin', match: '\\b\\d+(\\.\\d+)?\\b' },
     { name: 'storage.type.myelin', match: '\\b(i8|i16|i32|i64|u8|u16|u32|u64|usz|f32|f64|bool|str|bytes)\\b' },
-    { name: 'support.function.builtin.myelin', match: '\\b(io\\.println|str\\.fmt|db\\.(set|get|has)|http\\.serve|term\\.(green|red|cyan|bold|yellow|blue|magenta|gray|dim|reset)|cli\\.(args|count|arg_count|flag_bool|has_flag|flag_str|flag_int))\\b' },
+    {
+      match: '\\b(term)\\.(green|red|cyan|bold|yellow|blue|magenta|gray|dim|reset)\\b',
+      captures: {
+        '1': { name: 'support.class.builtin.term.myelin support.class.builtin.myelin' },
+        '2': { name: 'support.function.builtin.term.myelin support.function.builtin.myelin' },
+      },
+    },
+    {
+      match: '\\b(cli)\\.(args|count|arg_count|flag_bool|has_flag|flag_str|flag_int)\\b',
+      captures: {
+        '1': { name: 'support.class.builtin.cli.myelin support.class.builtin.myelin' },
+        '2': { name: 'support.function.builtin.cli.myelin support.function.builtin.myelin' },
+      },
+    },
+    {
+      match: '\\b(io)\\.(println|print|read_line|read_all)\\b',
+      captures: {
+        '1': { name: 'support.class.builtin.io.myelin support.class.builtin.myelin' },
+        '2': { name: 'support.function.builtin.io.myelin support.function.builtin.myelin' },
+      },
+    },
+    {
+      match: '\\b(str)\\.(fmt|len|split|join|trim|to_upper|to_lower|starts_with|ends_with|contains)\\b',
+      captures: {
+        '1': { name: 'support.class.builtin.str.myelin support.class.builtin.myelin' },
+        '2': { name: 'support.function.builtin.str.myelin support.function.builtin.myelin' },
+      },
+    },
+    {
+      match: '\\b(db)\\.(set|get|has|del)\\b',
+      captures: {
+        '1': { name: 'support.class.builtin.db.myelin support.class.builtin.myelin' },
+        '2': { name: 'support.function.builtin.db.myelin support.function.builtin.myelin' },
+      },
+    },
+    {
+      match: '\\b(http)\\.(serve|get|post|request)\\b',
+      captures: {
+        '1': { name: 'support.class.builtin.http.myelin support.class.builtin.myelin' },
+        '2': { name: 'support.function.builtin.http.myelin support.function.builtin.myelin' },
+      },
+    },
+    {
+      match: '\\b(io|str|db|http|term|cli|ai|gui|mobile|hw|cloud)\\.([a-zA-Z_][a-zA-Z0-9_]*)\\b',
+      captures: {
+        '1': { name: 'support.class.builtin.myelin' },
+        '2': { name: 'support.function.builtin.myelin' },
+      },
+    },
+    { name: 'support.class.builtin.myelin', match: '\\b(io|str|db|http|term|cli|ai|gui|mobile|hw|cloud)\\b' },
     { name: 'keyword.operator.myelin', match: '(\\?|\\^|=|==|!=|<=|>=|<|>|\\+|\\-|\\*|\\/|%|\\|)' },
   ],
 };

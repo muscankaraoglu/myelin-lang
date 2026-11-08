@@ -15,6 +15,7 @@
     { "include": "#constants" },
     { "include": "#numbers" },
     { "include": "#operators" },
+    { "include": "#builtins" },
     { "include": "#field-binding" },
     { "include": "#function-call" },
     { "include": "#identifiers" }
@@ -133,19 +134,31 @@
       "patterns": [
         {
           "name": "invalid.illegal.unsafe.myelin",
-          "match": "(?<=[\\s\\]])!unsafe(?:\\.[a-zA-Z0-9_]+)?"
+          "match": "(?<=[\\s\\]])!unsafe(?:\\.[a-zA-Z0-9_]+)?\\b"
         },
         {
-          "name": "keyword.control.capability.security.myelin",
-          "match": "(?<=[\\s\\]])!(?:net|db|fs|proc|env)(?:\\.[a-zA-Z0-9_]+)?"
+          "name": "keyword.control.capability.security.myelin entity.name.tag.capability.security.myelin",
+          "match": "(?<=[\\s\\]])!(?:net|db|fs|proc|env|cloud)(?:\\.[a-zA-Z0-9_]+)?\\b"
         },
         {
-          "name": "entity.name.tag.capability.host.myelin",
-          "match": "(?<=[\\s\\]])!(?:io|time|rand)(?:\\.[a-zA-Z0-9_]+)?"
+          "name": "entity.name.tag.capability.cli.myelin entity.name.tag.capability.myelin",
+          "match": "(?<=[\\s\\]])!(?:term|cli)(?:\\.[a-zA-Z0-9_]+)?\\b"
         },
         {
-          "name": "entity.name.tag.capability.general.myelin",
-          "match": "(?<=[\\s\\]])![a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z0-9_]+)?"
+          "name": "entity.name.tag.capability.host.myelin entity.name.tag.capability.myelin",
+          "match": "(?<=[\\s\\]])!(?:io|time|rand|hw)(?:\\.[a-zA-Z0-9_]+)?\\b"
+        },
+        {
+          "name": "entity.name.tag.capability.ai.myelin entity.name.tag.capability.myelin",
+          "match": "(?<=[\\s\\]])!(?:ai)(?:\\.[a-zA-Z0-9_]+)?\\b"
+        },
+        {
+          "name": "entity.name.tag.capability.gui.myelin entity.name.tag.capability.myelin",
+          "match": "(?<=[\\s\\]])!(?:gui|mobile)(?:\\.[a-zA-Z0-9_]+)?\\b"
+        },
+        {
+          "name": "entity.name.tag.capability.general.myelin entity.name.tag.capability.myelin",
+          "match": "(?<=[\\s\\]])![a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z0-9_]+)?\\b"
         }
       ]
     },
@@ -272,6 +285,63 @@
         { "name": "keyword.operator.logical.myelin", "match": "(&&|\\|\\||!)" },
         { "name": "keyword.operator.arithmetic.myelin", "match": "[\\+\\-\\*/%]" },
         { "name": "keyword.operator.assignment.myelin", "match": "=" }
+      ]
+    },
+    "builtins": {
+      "patterns": [
+        {
+          "match": "\\b(term)\\.(green|red|cyan|bold|yellow|blue|magenta|gray|dim|reset)\\b",
+          "captures": {
+            "1": { "name": "support.class.builtin.term.myelin support.class.builtin.myelin" },
+            "2": { "name": "support.function.builtin.term.myelin support.function.builtin.myelin" }
+          }
+        },
+        {
+          "match": "\\b(cli)\\.(args|count|arg_count|flag_bool|has_flag|flag_str|flag_int)\\b",
+          "captures": {
+            "1": { "name": "support.class.builtin.cli.myelin support.class.builtin.myelin" },
+            "2": { "name": "support.function.builtin.cli.myelin support.function.builtin.myelin" }
+          }
+        },
+        {
+          "match": "\\b(io)\\.(println|print|read_line|read_all)\\b",
+          "captures": {
+            "1": { "name": "support.class.builtin.io.myelin support.class.builtin.myelin" },
+            "2": { "name": "support.function.builtin.io.myelin support.function.builtin.myelin" }
+          }
+        },
+        {
+          "match": "\\b(str)\\.(fmt|len|split|join|trim|to_upper|to_lower|starts_with|ends_with|contains)\\b",
+          "captures": {
+            "1": { "name": "support.class.builtin.str.myelin support.class.builtin.myelin" },
+            "2": { "name": "support.function.builtin.str.myelin support.function.builtin.myelin" }
+          }
+        },
+        {
+          "match": "\\b(db)\\.(set|get|has|del)\\b",
+          "captures": {
+            "1": { "name": "support.class.builtin.db.myelin support.class.builtin.myelin" },
+            "2": { "name": "support.function.builtin.db.myelin support.function.builtin.myelin" }
+          }
+        },
+        {
+          "match": "\\b(http)\\.(serve|get|post|request)\\b",
+          "captures": {
+            "1": { "name": "support.class.builtin.http.myelin support.class.builtin.myelin" },
+            "2": { "name": "support.function.builtin.http.myelin support.function.builtin.myelin" }
+          }
+        },
+        {
+          "match": "\\b(io|str|db|http|term|cli|ai|gui|mobile|hw|cloud)\\.([a-zA-Z_][a-zA-Z0-9_]*)\\b",
+          "captures": {
+            "1": { "name": "support.class.builtin.myelin" },
+            "2": { "name": "support.function.builtin.myelin" }
+          }
+        },
+        {
+          "name": "support.class.builtin.myelin",
+          "match": "\\b(io|str|db|http|term|cli|ai|gui|mobile|hw|cloud)\\b"
+        }
       ]
     },
     "field-binding": {
