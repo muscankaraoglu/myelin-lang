@@ -5,16 +5,17 @@
   "fileTypes": ["myl"],
   "patterns": [
     { "include": "#comments" },
-    { "include": "#capabilities" },
-    { "include": "#contracts" },
+    { "include": "#strings" },
     { "include": "#top-level" },
     { "include": "#control-tags" },
-    { "include": "#guard-returns" },
+    { "include": "#contracts" },
+    { "include": "#capabilities" },
     { "include": "#types" },
+    { "include": "#guard-returns" },
     { "include": "#constants" },
-    { "include": "#strings" },
     { "include": "#numbers" },
     { "include": "#operators" },
+    { "include": "#field-binding" },
     { "include": "#function-call" },
     { "include": "#identifiers" }
   ],
@@ -23,53 +24,28 @@
       "name": "comment.line.double-dash.myelin",
       "match": "--.*$"
     },
-    "capabilities": {
+    "strings": {
+      "name": "string.quoted.double.myelin",
+      "begin": "\"",
+      "end": "\"",
       "patterns": [
         {
-          "name": "invalid.illegal.unsafe.myelin",
-          "match": "!unsafe(\\.[a-zA-Z0-9_]+)?"
-        },
-        {
-          "name": "keyword.control.capability.security.myelin",
-          "match": "!(net|db|fs|proc|env)(\\.[a-zA-Z0-9_]+)?"
-        },
-        {
-          "name": "entity.name.tag.capability.myelin",
-          "match": "!(io|time|rand)(\\.[a-zA-Z0-9_]+)?"
-        },
-        {
-          "name": "entity.name.tag.capability.general.myelin",
-          "match": "![a-zA-Z_][a-zA-Z0-9_]*(\\.[a-zA-Z0-9_]+)?"
-        }
-      ]
-    },
-    "contracts": {
-      "patterns": [
-        {
-          "name": "keyword.control.contract.req.myelin",
-          "match": "\\breq\\b"
-        },
-        {
-          "name": "keyword.control.contract.ens.myelin",
-          "match": "\\bens\\b"
-        },
-        {
-          "name": "variable.language.ret.myelin",
-          "match": "\\bret\\b"
+          "name": "constant.character.escape.myelin",
+          "match": "\\\\."
         }
       ]
     },
     "top-level": {
       "patterns": [
         {
-          "match": "^(#mod)\\s+([a-zA-Z_][a-zA-Z0-9_]*(\\.[a-zA-Z_][a-zA-Z0-9_]*)*)",
+          "match": "^(#mod)\\s+([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)*)",
           "captures": {
             "1": { "name": "keyword.control.directive.mod.myelin" },
             "2": { "name": "entity.name.namespace.myelin" }
           }
         },
         {
-          "match": "^(#use)\\s+([a-zA-Z_][a-zA-Z0-9_]*(\\.[a-zA-Z_][a-zA-Z0-9_]*)*)",
+          "match": "^(#use)\\s+([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)*)",
           "captures": {
             "1": { "name": "keyword.control.directive.use.myelin" },
             "2": { "name": "entity.name.namespace.myelin" }
@@ -110,6 +86,10 @@
             "1": { "name": "keyword.declaration.test.myelin" },
             "2": { "name": "entity.name.function.test.myelin" }
           }
+        },
+        {
+          "name": "keyword.control.directive.myelin",
+          "match": "^#(mod|use|rec|sum|ext|fn|test)\\b"
         }
       ]
     },
@@ -133,32 +113,82 @@
         }
       ]
     },
-    "guard-returns": {
+    "contracts": {
       "patterns": [
         {
-          "name": "keyword.operator.early-return-error.myelin",
-          "match": "\\^"
+          "name": "keyword.control.contract.req.myelin",
+          "match": "\\breq\\b"
         },
         {
-          "name": "keyword.operator.guard-pipe.myelin",
-          "match": "\\|"
+          "name": "keyword.control.contract.ens.myelin",
+          "match": "\\bens\\b"
         },
         {
-          "name": "keyword.operator.guard-assert.myelin",
-          "match": "(^|\\s)\\?(?=\\s)"
+          "name": "variable.language.ret.myelin",
+          "match": "\\bret\\b"
+        }
+      ]
+    },
+    "capabilities": {
+      "patterns": [
+        {
+          "name": "invalid.illegal.unsafe.myelin",
+          "match": "(?<=[\\s\\]])!unsafe(?:\\.[a-zA-Z0-9_]+)?"
         },
         {
-          "name": "keyword.operator.error-unwrap-propagate.myelin",
-          "match": "(?<=\\S)\\?(?=\\s|$)"
+          "name": "keyword.control.capability.security.myelin",
+          "match": "(?<=[\\s\\]])!(?:net|db|fs|proc|env)(?:\\.[a-zA-Z0-9_]+)?"
         },
         {
-          "name": "keyword.operator.normal-return.myelin",
-          "match": "(^\\s*)=\\s"
+          "name": "entity.name.tag.capability.host.myelin",
+          "match": "(?<=[\\s\\]])!(?:io|time|rand)(?:\\.[a-zA-Z0-9_]+)?"
+        },
+        {
+          "name": "entity.name.tag.capability.general.myelin",
+          "match": "(?<=[\\s\\]])![a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z0-9_]+)?"
         }
       ]
     },
     "types": {
       "patterns": [
+        {
+          "match": "(\\?)((?:i8|i16|i32|i64|u8|u16|u32|u64|usz|f32|f64|bool|str|bytes|[A-Z][a-zA-Z0-9_]*|\\[\\][a-zA-Z0-9_]+))(!)([A-Z][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": { "name": "storage.modifier.optional.myelin" },
+            "2": { "name": "support.type.myelin" },
+            "3": { "name": "storage.modifier.fallible.myelin" },
+            "4": { "name": "entity.name.type.error.myelin" }
+          }
+        },
+        {
+          "match": "((?:i8|i16|i32|i64|u8|u16|u32|u64|usz|f32|f64|bool|str|bytes|[A-Z][a-zA-Z0-9_]*|\\[\\][a-zA-Z0-9_]+))(!)([A-Z][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": { "name": "support.type.myelin" },
+            "2": { "name": "storage.modifier.fallible.myelin" },
+            "3": { "name": "entity.name.type.error.myelin" }
+          }
+        },
+        {
+          "match": "(\\?)((?:i8|i16|i32|i64|u8|u16|u32|u64|usz|f32|f64|bool|str|bytes|[A-Z][a-zA-Z0-9_]*|\\[\\][a-zA-Z0-9_]+|\\[[^\\]]+\\]))",
+          "captures": {
+            "1": { "name": "storage.modifier.optional.myelin" },
+            "2": { "name": "support.type.myelin" }
+          }
+        },
+        {
+          "match": "(\\[\\])([a-zA-Z_][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": { "name": "storage.modifier.array.myelin" },
+            "2": { "name": "support.type.myelin" }
+          }
+        },
+        {
+          "match": "(\\*)([a-zA-Z_][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": { "name": "storage.modifier.pointer.myelin" },
+            "2": { "name": "support.type.myelin" }
+          }
+        },
         {
           "name": "support.type.primitive.integer.myelin",
           "match": "\\b(i8|i16|i32|i64|u8|u16|u32|u64|usz)\\b"
@@ -181,6 +211,30 @@
         }
       ]
     },
+    "guard-returns": {
+      "patterns": [
+        {
+          "name": "keyword.operator.early-return-error.myelin",
+          "match": "\\^"
+        },
+        {
+          "name": "keyword.operator.guard-pipe.myelin",
+          "match": "\\|"
+        },
+        {
+          "name": "keyword.operator.guard-assert.myelin",
+          "match": "(?:^|\\s)\\?(?=\\s)"
+        },
+        {
+          "name": "keyword.operator.error-unwrap-propagate.myelin",
+          "match": "(?<=\\S)\\?(?=\\s|$)"
+        },
+        {
+          "name": "keyword.operator.normal-return.myelin",
+          "match": "(?:^\\s*)=\\s"
+        }
+      ]
+    },
     "constants": {
       "patterns": [
         {
@@ -193,22 +247,11 @@
         }
       ]
     },
-    "strings": {
-      "name": "string.quoted.double.myelin",
-      "begin": "\"",
-      "end": "\"",
-      "patterns": [
-        {
-          "name": "constant.character.escape.myelin",
-          "match": "\\\\."
-        }
-      ]
-    },
     "numbers": {
       "patterns": [
         {
           "name": "constant.numeric.float.myelin",
-          "match": "\\b[0-9]+\\.[0-9]+([eE][+-]?[0-9]+)?\\b"
+          "match": "\\b[0-9]+\\.[0-9]+(?:[eE][+-]?[0-9]+)?\\b"
         },
         {
           "name": "constant.numeric.hex.myelin",
@@ -226,10 +269,17 @@
         { "name": "keyword.operator.arrow.thin.myelin", "match": "->" },
         { "name": "keyword.operator.coalescing.myelin", "match": "\\?\\?" },
         { "name": "keyword.operator.comparison.myelin", "match": "(==|!=|<=|>=|<|>)" },
-        { "name": "keyword.operator.logical.myelin", "match": "(&&|\\|\\|)" },
+        { "name": "keyword.operator.logical.myelin", "match": "(&&|\\|\\||!)" },
         { "name": "keyword.operator.arithmetic.myelin", "match": "[\\+\\-\\*/%]" },
         { "name": "keyword.operator.assignment.myelin", "match": "=" }
       ]
+    },
+    "field-binding": {
+      "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(:)",
+      "captures": {
+        "1": { "name": "variable.parameter.myelin" },
+        "2": { "name": "punctuation.separator.colon.myelin" }
+      }
     },
     "function-call": {
       "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\.([a-zA-Z_][a-zA-Z0-9_]*)\\b",
@@ -240,6 +290,10 @@
     },
     "identifiers": {
       "patterns": [
+        {
+          "name": "variable.language.discard.myelin",
+          "match": "\\b_\\b"
+        },
         {
           "name": "variable.other.myelin",
           "match": "\\b[a-z_][a-zA-Z0-9_]*\\b"

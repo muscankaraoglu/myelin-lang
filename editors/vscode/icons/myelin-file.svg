@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="mylGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="28" height="28" rx="6" fill="#0f172a" stroke="#38bdf8" stroke-width="1.2" />
+  <polyline points="7,24 7,10 16,19 25,10 25,24" fill="none" stroke="url(#mylGrad)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="7" cy="10" r="2.2" fill="#38bdf8" />
+  <circle cx="16" cy="19" r="2.2" fill="#f43f5e" />
+  <circle cx="25" cy="10" r="2.2" fill="#a855f7" />
+  <circle cx="7" cy="24" r="1.8" fill="#38bdf8" />
+  <circle cx="25" cy="24" r="1.8" fill="#a855f7" />
+</svg>

@@ -1,0 +1,10 @@
+{
+  "iconDefinitions": {
+    "_myelin_file": {
+      "iconPath": "./myelin-file.svg"
+    }
+  },
+  "fileExtensions": {
+    "myl": "_myelin_file"
+  }
+}

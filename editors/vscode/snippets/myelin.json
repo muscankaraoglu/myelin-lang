@@ -1,57 +1,104 @@
 {
-  "Function Declaration": {
-    "prefix": "fn",
+  "Function Declaration (#fn)": {
+    "prefix": "#fn",
     "body": [
-      "#fn ${1:name} [${2:args}] ${3:!io}",
+      "#fn ${1:name} [${2:arg}:${3:type} -> ${4:i64!TxErr}] ${5:!io}",
+      "  req ${6:arg > 0}",
+      "  ens ${7:ret >= 0}",
       "  ${0:= 0}"
     ],
-    "description": "Declare a top-level Myelin function"
+    "description": "Declare a top-level Myelin function with contracts and capabilities"
   },
-  "Record Declaration": {
-    "prefix": "rec",
+  "Record Declaration (#rec)": {
+    "prefix": "#rec",
     "body": [
-      "#rec ${1:Name} [${2:field1}:${3:u64} ${4:field2}:${5:str}]"
+      "#rec ${1:Name} [${2:id}:${3:u64} ${4:active}:${5:bool} ${6:val}:${7:i64}]"
     ],
     "description": "Declare a Myelin struct record"
   },
-  "Sum Type Declaration": {
-    "prefix": "sum",
+  "Sum Type Declaration (#sum)": {
+    "prefix": "#sum",
     "body": [
-      "#sum ${1:Name} [${2:VariantA} ${3:VariantB}(${4:i64})]"
+      "#sum ${1:Name} [${2:VariantA} ${3:VariantB}(${4:i64}) ${5:Error(str)}]"
     ],
     "description": "Declare a Myelin tagged union sum type"
   },
-  "Contract Pre/Post": {
+  "Conditional Branch (@if)": {
+    "prefix": "@if",
+    "body": [
+      "@if ${1:cond}",
+      "  ${2:-- true branch}",
+      "@elif ${3:other_cond}",
+      "  ${4:-- elif branch}",
+      "@el",
+      "  ${0:-- fallback}"
+    ],
+    "description": "Branching conditional statement (@if / @elif / @el)"
+  },
+  "Loop Statement (@loop)": {
+    "prefix": "@loop",
+    "body": [
+      "@loop",
+      "  ? ${1:idx < 10} | @brk",
+      "  ${0:idx = idx + 1}"
+    ],
+    "description": "Loop with exit condition (@loop / @brk)"
+  },
+  "For Loop (@for)": {
+    "prefix": "@for",
+    "body": [
+      "@for ${1:item} : ${2:collection}",
+      "  ? ${3:item.active} | @next",
+      "  ${0:-- process item}"
+    ],
+    "description": "Iterate over collection or slice"
+  },
+  "Pattern Match (@match)": {
+    "prefix": "@match",
+    "body": [
+      "@match ${1:expr}",
+      "  Ok(${2:v})  => = ${2:v}",
+      "  Err(${3:e}) => ^ ${3:e}",
+      "  _      => ${0:= -1}"
+    ],
+    "description": "Exhaustive pattern match block"
+  },
+  "Contracts (req/ens)": {
     "prefix": "contract",
     "body": [
       "req ${1:amt > 0}",
       "ens ${2:ret >= 0}"
     ],
-    "description": "Insert precondition and postcondition contracts"
+    "description": "Insert precondition and postcondition verification contracts"
   },
-  "Guard with Error": {
+  "Guard with Early Return": {
     "prefix": "guard",
     "body": [
       "? ${1:condition} | ^${2:ErrVariant}"
     ],
     "description": "Guard condition with early error return"
   },
-  "Pattern Match": {
-    "prefix": "match",
-    "body": [
-      "@match ${1:expr}",
-      "  ${2:Ok(v)}  => = ${3:v}",
-      "  ${4:Err(e)} => ^ ${5:e}"
-    ],
-    "description": "Pattern match block"
-  },
-  "Unit Test": {
-    "prefix": "test",
+  "Unit Test Declaration (#test)": {
+    "prefix": "#test",
     "body": [
       "#test ${1:test_name}",
       "  res = ${2:call}",
-      "  ? ${3:res == expected}"
+      "  ? ${0:res == expected}"
     ],
     "description": "Declare an embedded Myelin unit test"
+  },
+  "Module Declaration (#mod)": {
+    "prefix": "#mod",
+    "body": [
+      "#mod ${1:std.math}"
+    ],
+    "description": "Declare module namespace"
+  },
+  "Module Import (#use)": {
+    "prefix": "#use",
+    "body": [
+      "#use ${1:std.io}"
+    ],
+    "description": "Import external or stdlib module"
   }
 }

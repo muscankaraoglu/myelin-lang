@@ -1,0 +1,64 @@
+#mod main
+
+#fn main [] !io !cli !term
+  header1 = term.bold (term.cyan "╔════════════════════════════════════════════════════════════════╗")
+  header2 = term.bold (term.cyan "║              MYELIN DEVELOPER CLI TOOL v0.1.0                  ║")
+  header3 = term.bold (term.cyan "║       Zero-Bloat • Flat-SSA Systems Language Engine            ║")
+  header4 = term.bold (term.cyan "╚════════════════════════════════════════════════════════════════╝")
+  io.println header1
+  io.println header2
+  io.println header3
+  io.println header4
+  io.println ""
+
+  args = cli.args
+  arg_count = args.len
+  banner = str.fmt "-> Detected CLI arguments count: {}" arg_count
+  io.println (term.bold banner)
+
+  @if arg_count > 0
+    io.println (term.cyan "Arguments stream:")
+    @for a : args
+      arg_line = str.fmt "   * {}" a
+      io.println arg_line
+
+  release = cli.flag_bool "--release"
+  verbose = cli.flag_bool "--verbose"
+  target = cli.flag_str "--target" "native-x86_64"
+  jobs = cli.flag_int "--jobs" 8
+
+  cfg_banner = term.bold (term.cyan "[Configuration]")
+  io.println cfg_banner
+  t_msg = str.fmt "  • Build Target:    {}" target
+  io.println (term.cyan t_msg)
+  j_msg = str.fmt "  • Worker Threads:  {}" jobs
+  io.println (term.cyan j_msg)
+
+  @if release
+    io.println (term.green "  • Build Profile:   RELEASE (LTO active, zero runtime bloat)")
+  @el
+    io.println (term.yellow "  • Build Profile:   DEV (capability safety assertions active)")
+
+  @if verbose
+    io.println (term.cyan "  • Verbose Mode:    ENABLED (diagnostic stream active)")
+  @el
+    io.println "  • Verbose Mode:    DISABLED (pass --verbose to enable)"
+
+  io.println ""
+  pipe_banner = term.bold (term.cyan "[Pipeline Stages]")
+  io.println pipe_banner
+
+  io.println (term.green "  ✔ [1/4] Flat-SSA AST verification passed")
+  io.println (term.green "  ✔ [2/4] Capability boundaries (!io, !cli, !term) verified")
+  io.println (term.green "  ✔ [3/4] Memory safety & contract invariants verified")
+  io.println (term.green "  ✔ [4/4] Standalone binary emitted: 0 KB electron bloat")
+
+  io.println ""
+  io.println (term.bold "[Security & Health Audit]")
+  io.println (term.green "  ✔ [PASS] 0 capability leaks detected")
+  io.println (term.red   "  ✖ [TEST] 0 fatal compilation errors")
+
+  io.println ""
+  success_msg = term.bold (term.green "==> CLI PIPELINE COMPLETED SUCCESSFULLY <==")
+  io.println success_msg
+  io.println (term.bold "Tip: Try passing flags like: --release --verbose --target wasm32 --jobs 16")

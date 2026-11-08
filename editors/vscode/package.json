@@ -1,16 +1,20 @@
 {
   "name": "myelin-lang",
   "displayName": "Myelin Language Support",
-  "description": "Rich language support and review highlighting for Myelin (.myl) — the token-minimal systems programming language.",
+  "description": "Rich language support, review-grade syntax highlighting, and snippets for Myelin (.myl) — the token-minimal systems programming language.",
   "version": "0.1.0",
   "publisher": "myelin-lang",
+  "icon": "icons/myelin-icon.png",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/myelin-lang/myelin.git"
+  },
   "engines": {
     "vscode": "^1.75.0"
   },
   "categories": [
     "Programming Languages",
-    "Linters",
     "Snippets"
   ],
   "keywords": [
@@ -31,7 +35,11 @@
         "extensions": [
           ".myl"
         ],
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/myelin-file.svg",
+          "dark": "./icons/myelin-file.svg"
+        }
       }
     ],
     "grammars": [
@@ -46,6 +54,20 @@
         "language": "myelin",
         "path": "./snippets/myelin.json"
       }
-    ]
+    ],
+    "iconThemes": [
+      {
+        "id": "myelin-icons",
+        "label": "Myelin File Icons",
+        "path": "./icons/icon-theme.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[myelin]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true,
+        "editor.detectIndentation": false
+      }
+    }
   }
 }
