@@ -24,7 +24,9 @@
    - `io.println`: Formatted console printing (`!io`).
    - `str.fmt`: Zero-cost template formatting.
    - `db.set`, `db.get`, `db.has`: Built-in zero-dependency embedded key-value and document storage (`!db`).
-   - `http.serve`: Native high-concurrency bare-metal HTTP web server (`!net`).
+   - `http.serve`: Native high-concurrency bare-metal HTTP web server supporting dynamic REST (GET, POST, PUT, DELETE, headers, request body parsing) (`!net`).
+   - `json.*`: Pure zero-dependency JSON runtime (`json.parse`, `json.stringify`, `json.get`, `json.set`, `json.has`) with `Value::Map` support (100% pure, 0 ambient authority).
+   - `gui.*`: Zero-electron lightweight native OS desktop windowing (`gui.window`, `gui.text`, `gui.button`, `gui.alert`, `gui.confirm`, `gui.show`) (`!gui`).
    - `term.*`: ANSI escape styling (`term.green`, `term.bold`, `term.cyan`, etc.) (`!term`).
    - `cli.*`: CLI flag and argument inspection (`cli.args`, `cli.flag_str`, `cli.flag_int`) (`!cli`).
 4. **Human Trust Engine (`myelinc audit`):**
@@ -80,9 +82,8 @@ All 12 specialized skill definitions are installed in `.agent-skills/` and `.gem
 
 ---
 
-## 5. Next Immediate Roadmap Milestones
-When continuing in Remote Project, prompt the agent with any of these tracks:
-- **Milestone A (Web/REST):** Implement `json.parse` and request body parsing in `http.serve` for dynamic CRUD REST APIs.
-- **Milestone B (Native GUI):** Prototype `std.gui` native lightweight windowing for Windows/macOS.
+## 5. Roadmap Status & Next Milestones
+- **[COMPLETED & VERIFIED] Milestone A (Web/REST):** Implemented `Value::Map`, pure `json.*` engine (parse, stringify, get, set, has), and full REST HTTP body/method parser in `http.serve`. Verified with live GET/POST microsecond benchmarks.
+- **[COMPLETED & VERIFIED] Milestone B (Native GUI):** Implemented `gui.*` native desktop subsystem (Win32 GDI/controls, zero-electron, 0ms launch) with strict `!gui` capability boundary in `myelinc audit`.
 - **Milestone C (SSA / VM):** Lower rebound variables to pure Single Static Assignment (`myelin-mir`).
 - **Milestone D (AI Inference):** Prototype local GGUF/ONNX model execution via `std.ai`.

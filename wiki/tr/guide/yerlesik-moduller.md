@@ -189,3 +189,64 @@ Isci Is Parcaciklari:8
 Profil: RELEASE (Optimizasyon ve LTO aktif)
 -- finished in 329 µs
 ```
+
+---
+
+## 6. `json` — Saf ve Deterministik JSON Motoru
+
+`json` modülü, sıfır harici bağımlılıkla doğrudan Myelin çalışma zamanına gömülü saf (pure) bir JSON parser ve serileştiricisidir. Hiçbir yan etki veya sistem sızıntısı üretmediği için **sıfır yetki** gerektirir (100% pür).
+
+### Metotlar:
+- `json.parse [json_str -> doc]`: JSON dizgesini Myelin harita/nesne yapısına ayrıştırır.
+- `json.stringify [val -> str]`: Myelin değerini standart JSON dizgesine dönüştürür.
+- `json.get [doc, path_str -> val]`: Noktalı yol (path) araması yapar (`json.get user "adres.sehir"`).
+- `json.set [doc, path_str, new_val -> doc]`: Harita alanını günceller.
+- `json.has [doc, key:str -> bool]`: Anahtarın varlığını sorgular.
+
+### Örnek:
+
+```myelin
+#mod main
+
+#fn main [] !io
+  raw = "{\"kullanici\":\"Can\",\"roller\":[\"mimar\",\"kurucu\"],\"aktif\":true}"
+  doc = json.parse raw
+
+  ad = json.get doc "kullanici"
+  ilk_rol = json.get doc "roller.0"
+  io.println "Kullanici:" ad "Birincil Rol:" ilk_rol
+
+  guncel = json.set doc "versiyon" "v1.0"
+  io.println "Serilestirilmis JSON:" (json.stringify guncel)
+```
+
+---
+
+## 7. `gui` — Yerel Hafif Masaüstü Arayüzü (Native Desktop GUI)
+
+Myelin, sıfır Electron şişkinliğiyle doğrudan işletim sisteminin yerel pencere ve kontrol API'lerini kullanır (`!gui` yetkisi gerektirir). Windows üzerinde harici hiçbir DLL veya MSVC derleyicisi gerektirmeden doğrudan Win32 kontrolleri (Pencere, Düğme, Metin, Dialog) oluşturur; 0ms başlangıç süresi sunar.
+
+### Metotlar:
+- `gui.alert [title:str, msg:str]`: Yerel işletim sistemi uyarı kutusu gösterir.
+- `gui.confirm [title:str, msg:str -> bool]`: Yerel Evet/Hayır onay kutusu açar.
+- `gui.window [title:str, width:i64, height:i64 -> win_id]`: Yeni bir yerel pencere tanımlar.
+- `gui.text [win, text:str, x:i64, y:i64, w:i64, h:i64]`: Pencere içine statik metin/etiket ekler.
+- `gui.button [win, text:str, x:i64, y:i64, w:i64, h:i64, on_click_fn:str]`: Tıklama olayına bağlı yerel düğme ekler.
+- `gui.show [win]`: Pencereyi görüntüler ve yerel olay döngüsünü (event loop) çalıştırır.
+
+### Örnek:
+
+```myelin
+#mod main
+
+#fn kaydet [] !gui !db
+  _ = db.set "durum" "aktif"
+  gui.alert "Myelin App" "Veri tabanina kaydedildi!"
+
+#fn main [] !gui !db !io
+  io.println "Masaustu arayuzu baslatiliyor..."
+  win = gui.window "Myelin Yerel Pencere" 450 260
+  gui.text win "Sifir Electron, Saf Yerel Hiz!" 25 25 400 24
+  gui.button win "Kaydet" 25 80 130 36 "kaydet"
+  gui.show win
+```

@@ -1,0 +1,28 @@
+#mod main
+
+#fn api_router [request:str -> str] !db
+  m = request.method
+  p = request.path
+  @if m == "GET"
+    @if p == "/status"
+      = "{\"status\":\"healthy\",\"engine\":\"myelin-rest\",\"speed\":\"microsecond\"}"
+    @elif p == "/items"
+      val = db.get "item_1"
+      = str.fmt "{\"id\":\"item_1\",\"value\":\"{}\"}" val
+    @el
+      = "{\"error\":\"route_not_found\"}"
+  @elif m == "POST"
+    @if p == "/items"
+      payload = json.parse request.body
+      item_name = json.get payload "name"
+      _ = db.set "item_1" item_name
+      = "{\"created\":true,\"id\":\"item_1\"}"
+    @el
+      = "{\"error\":\"route_not_found\"}"
+  @el
+    = "{\"error\":\"method_not_allowed\"}"
+
+#fn main [] !net !db !io
+  io.println "Starting Myelin REST API Server on port 8081..."
+  _ = db.set "item_1" "Initial Myelin Item"
+  _ = http.serve 8081 "api_router"

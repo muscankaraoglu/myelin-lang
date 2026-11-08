@@ -1,0 +1,13 @@
+#mod main
+
+#fn on_save [] !gui !db
+  _ = db.set "state" "Saved by GUI"
+  gui.alert "Success" "Record has been saved to embedded DB!"
+
+#fn main [] !gui !db !io
+  io.println "Starting Myelin Native Desktop App..."
+  win = gui.window "Myelin Native Desktop" 450 260
+  gui.text win "Myelin: The Zero-Electron Native Desktop Platform" 25 25 400 24
+  gui.text win "Native OS GDI/Controls | Instantaneous 0ms Launch" 25 55 400 24
+  gui.button win "Save State" 25 100 130 36 "on_save"
+  gui.show win

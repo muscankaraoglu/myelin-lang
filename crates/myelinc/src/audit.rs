@@ -286,6 +286,9 @@ fn collect_expr_caps(
                         "http" | "net" => {
                             used_caps.insert("!net".to_string());
                         }
+                        "gui" | "window" => {
+                            used_caps.insert("!gui".to_string());
+                        }
                         "fs" => {
                             used_caps.insert("!fs".to_string());
                         }

@@ -1,0 +1,17 @@
+#mod main
+
+#fn main [] !io
+  raw = "{\"service\":\"myelin-gateway\",\"port\":8080,\"active\":true,\"tags\":[\"fast\",\"safe\"]}"
+  io.println "Raw JSON input:" raw
+  
+  doc = json.parse raw
+  service_name = json.get doc "service"
+  port = json.get doc "port"
+  io.println "Parsed Service:" service_name "on port:" port
+
+  first_tag = json.get doc "tags.0"
+  io.println "Primary Tag:" first_tag
+
+  updated = json.set doc "version" "v1.0.0"
+  out = json.stringify updated
+  io.println "Reserialized JSON:" out
