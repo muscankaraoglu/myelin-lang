@@ -1,4 +1,0 @@
-#mod main
-
-#fn main [] !io
-  io.println "Benim adim Mustafa Can Karaoğlu, bu da benim dilim!"
