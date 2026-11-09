@@ -12,6 +12,7 @@ use std::time::Instant;
 use myelin_ast::{BinOp, Expr, FnDecl, GuardAction, Item, Literal, Stmt, UnaryOp};
 use myelin_diag::SourceFile;
 use myelin_lexer::tokenize;
+use myelin_mir::lower_module;
 use myelin_parser::parse_source;
 
 mod audit;
@@ -25,6 +26,7 @@ fn print_usage() {
            myelinc run   <file.myl> [--llm]\n  \
            myelinc check <file.myl> [--llm]\n  \
            myelinc audit <file.myl> [--llm]\n  \
+           myelinc mir   <file.myl> [--llm]\n  \
            myelinc parse <file.myl> [--llm]\n  \
            myelinc lex   <file.myl> [--llm]"
     );
@@ -1131,6 +1133,11 @@ fn main() -> ExitCode {
                 emit_diagnostics(&sf, &out.diagnostics, llm_mode);
                 return ExitCode::FAILURE;
             }
+            let (_, mir_diags) = lower_module(&out.module);
+            if !mir_diags.is_empty() {
+                emit_diagnostics(&sf, &mir_diags, llm_mode);
+                return ExitCode::FAILURE;
+            }
             let fn_count = out
                 .module
                 .items
@@ -1154,13 +1161,32 @@ fn main() -> ExitCode {
                 );
             } else {
                 println!(
-                    "OK: '{}' checked successfully ({} items, {} functions, {} tests) in {} Âµs.",
+                    "OK: '{}' checked successfully ({} items, {} functions, {} tests, SSA MIR & linear types verified) in {} µs.",
                     sf.name,
                     out.module.items.len(),
                     fn_count,
                     test_count,
                     elapsed.as_micros()
                 );
+            }
+            ExitCode::SUCCESS
+        }
+        "mir" => {
+            let t0 = Instant::now();
+            let out = parse_source(&sf.src);
+            if !out.diagnostics.is_empty() {
+                emit_diagnostics(&sf, &out.diagnostics, llm_mode);
+                return ExitCode::FAILURE;
+            }
+            let (mir_mod, mir_diags) = lower_module(&out.module);
+            if !mir_diags.is_empty() {
+                emit_diagnostics(&sf, &mir_diags, llm_mode);
+                return ExitCode::FAILURE;
+            }
+            println!("{}", mir_mod.print_mir());
+            let elapsed = t0.elapsed();
+            if !llm_mode {
+                eprintln!("-- lowered to Flat SSA MIR in {} µs", elapsed.as_micros());
             }
             ExitCode::SUCCESS
         }

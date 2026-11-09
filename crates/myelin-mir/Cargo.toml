@@ -1,0 +1,12 @@
+[package]
+name = "myelin-mir"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+myelin-ast = { path = "../myelin-ast" }
+myelin-diag = { path = "../myelin-diag" }
+
+[dev-dependencies]
+myelin-parser = { path = "../myelin-parser" }

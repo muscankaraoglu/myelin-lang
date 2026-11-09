@@ -1,0 +1,10 @@
+#mod main
+
+#fn process_file [] !fs !io
+  file = fs.open "records.dat"
+  io.println "File opened as a linear resource."
+  _ = fs.close file
+  io.println "Linear resource successfully closed and consumed."
+
+#fn main [] !fs !io
+  process_file

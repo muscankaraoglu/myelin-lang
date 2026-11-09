@@ -85,5 +85,5 @@ All 12 specialized skill definitions are installed in `.agent-skills/` and `.gem
 ## 5. Roadmap Status & Next Milestones
 - **[COMPLETED & VERIFIED] Milestone A (Web/REST):** Implemented `Value::Map`, pure `json.*` engine (parse, stringify, get, set, has), and full REST HTTP body/method parser in `http.serve`. Verified with live GET/POST microsecond benchmarks.
 - **[COMPLETED & VERIFIED] Milestone B (Native GUI):** Implemented `gui.*` native desktop subsystem (Win32 GDI/controls, zero-electron, 0ms launch) with strict `!gui` capability boundary in `myelinc audit`.
-- **Milestone C (SSA / VM):** Lower rebound variables to pure Single Static Assignment (`myelin-mir`).
+- **[COMPLETED & VERIFIED] Milestone C (SSA / Linear Types in `myelin-mir`):** Built `crates/myelin-mir` crate. Lowers AST variables to Flat SSA virtual registers (`%0, %1...`), generates basic block argument CFGs (`bb0, bb1...`), and enforces Austral-style linear type resource checking (`L001` resource leak, `L002` double consumption). Integrated into `myelinc mir` and `myelinc check`.
 - **Milestone D (AI Inference):** Prototype local GGUF/ONNX model execution via `std.ai`.

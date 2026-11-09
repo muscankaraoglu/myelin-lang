@@ -5,6 +5,7 @@ members = [
     "crates/myelin-ast",
     "crates/myelin-lexer",
     "crates/myelin-parser",
+    "crates/myelin-mir",
     "crates/myelinc",
 ]
 

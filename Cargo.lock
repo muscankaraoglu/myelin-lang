@@ -21,6 +21,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "myelin-mir"
+version = "0.1.0"
+dependencies = [
+ "myelin-ast",
+ "myelin-diag",
+ "myelin-parser",
+]
+
+[[package]]
 name = "myelin-parser"
 version = "0.1.0"
 dependencies = [
@@ -36,5 +45,6 @@ dependencies = [
  "myelin-ast",
  "myelin-diag",
  "myelin-lexer",
+ "myelin-mir",
  "myelin-parser",
 ]
